@@ -180,10 +180,26 @@
               <bool>false</bool>
              </property>
             </widget>
-            <widget class="QLineEdit" name="code"/>
-            <widget class="QLineEdit" name="info"/>
-            <widget class="QLineEdit" name="val"/>
-            <widget class="QLineEdit" name="note"/>
+            <widget class="QLineEdit" name="code">
+             <property name="maxLength">
+              <number>14</number>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="info">
+             <property name="maxLength">
+              <number>21</number>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="val">
+             <property name="inputMask">
+              <string>00</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="note">
+             <property name="maxLength">
+              <number>30</number>
+             </property>
+            </widget>
            </widget>
           </widget>
          </item>

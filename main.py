@@ -21,7 +21,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         user_password = str(self.input_passwd.text())
         db = Database.DataBase()
         db.create_connection()
-        user_login = "admin"; user_password = "qwerty"   # always logged as admin
+        #user_login = "admin"; user_password = "qwerty"   # TODO always logged as admin - remove it later
         login_auth = (user_login, user_password)
 
         if db.verify_user(login_auth):
@@ -34,7 +34,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
             self.showDialog()
 
     def showDialog(self):
-        QMessageBox.about(self, "Błąd!", "Błędny login/hasło!")
+        QMessageBox.critical(self, "Błąd!", "Błędny login/hasło!")
 
 
 class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
@@ -54,14 +54,32 @@ class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
         how_many = self.val.text()
         note = self.note.text()
         product_table = [orderer, code, info, how_many, note]
-        self.order_table = product_table
-        self.ordered.emit()
-        print(self.order_table)
+        counter = 0
+        try:
+            for i in product_table:  # verify input text
+                if i != '':
+                    counter += 1
+            if int(how_many) == 0 or how_many == "":  # number of ordered product cannot be at 0
+                self.show_warning("Błąd!", "Ilość zamawianego towaru musi być > 0")
+
+            elif counter > 2:
+                self.order_table = product_table
+                self.ordered.emit()
+            else:
+                self.statusBar.showMessage("Formularz nie może być pusty!")
+                self.show_warning("Uzupełnij formularz!", "Formularz nie może być pusty!")
+        except ValueError as e:
+            self.show_warning("Błąd!", "Wprowadź ilość zamawianego towaru")
+            print(e)
+
+    def show_warning(self, title, message):
+        QMessageBox.warning(self, title, message)
 
 
 class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
     confirmed = QtCore.pyqtSignal()
     wiped = QtCore.pyqtSignal()
+
     headers = ["kod", "opis", "sztuk", "notatka"]
 
     def __init__(self, parent):
@@ -70,18 +88,33 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         self.setupUi(self)
         self.tableWidget.setRowCount(1)
         self.tableWidget.setColumnCount(4)
-
         self.wipe.clicked.connect(self.del_button)
+        self.apply.clicked.connect(self.confirm_order)
 
-    def add_table(self, list):
-        for i in range(1, len(list)):
-            self.tableWidget.setItem(0, i-1, QtWidgets.QTableWidgetItem(str(list[i])))
+    def add_table(self, table_list):
+        for i in range(1, len(table_list)):
+            self.tableWidget.setItem(0, i - 1, QtWidgets.QTableWidgetItem(str(table_list[i])))
             self.tableWidget.resizeColumnsToContents()
             self.tableWidget.setHorizontalHeaderLabels(self.headers)
 
     def del_button(self):
         self.wiped.emit()
         self.close()
+
+    def confirm_order(self):
+        # TODO wklepanie do bazy danych tabeli
+        correctly_added = True # TODO
+        if correctly_added:
+            self.show_msg("Dodano", "Zamówienie zostało złożone")
+        else:
+            self.show_error("Błąd!", "Błąd przy dodawaniu do bazy danych!\nSprawdź połączenie z internetem.\n"
+                                     "Jeśli nie pomoże, skontaktuj się z PCLAND")
+
+    def show_msg(self, title, message):
+        QMessageBox.about(self, title, message)
+
+    def show_error(self, title, message):
+        QMessageBox.critical(self, title, message)
 
 
 class Controller:
@@ -90,12 +123,11 @@ class Controller:
         self.main_window = Main_window()
         self.order_window = OrderWindow(self.main_window)
 
-
         self.login.logged.connect(self.get_username_from_login)
         self.main_window.ordered.connect(self.prepare_order_table)
-        #self.login.show()
+        self.login.show()
         #self.order_window.show()
-        self.get_username_from_login()
+        #self.get_username_from_login()
 
     def get_username_from_login(self):
         username = self.login.curr_user
