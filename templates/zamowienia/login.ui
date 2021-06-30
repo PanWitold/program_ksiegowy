@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LOGIN</class>
+ <widget class="QMainWindow" name="LOGIN">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>377</width>
+    <height>252</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>zamówienia</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="logowanie">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;LOGOWANIE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>LOGIN:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="input_login">
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>HASŁO:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="input_passwd">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>ZALOGUJ</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>input_passwd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>pushButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>308</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>input_login</sender>
+   <signal>returnPressed()</signal>
+   <receiver>input_passwd</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>statusbar</receiver>
+   <slot>clearMessage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>191</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>update(brak)</slot>
+ </slots>
+</ui>
