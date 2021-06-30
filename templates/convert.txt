@@ -1,0 +1,6 @@
+pyuic5 -o main_window_ui.py ui/main_window.ui
+
+
+https://pythonspot.com/pyqt5-statusbar/
+https://realpython.com/qt-designer-python/
+https://www.mfitzp.com/tutorials/creating-multiple-windows/
