@@ -66,5 +66,5 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Zamówienie"))
-        self.apply.setText(_translate("MainWindow", "ZATWIERDŹ"))
-        self.wipe.setText(_translate("MainWindow", "USUŃ"))
+        self.apply.setText(_translate("MainWindow", "&ZATWIERDŹ"))
+        self.wipe.setText(_translate("MainWindow", "&USUŃ"))

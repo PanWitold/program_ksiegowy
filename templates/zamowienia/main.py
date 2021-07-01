@@ -162,5 +162,5 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "SZTUK"))
         self.label_6.setText(_translate("MainWindow", "NOTATKA"))
         self.val.setInputMask(_translate("MainWindow", "00"))
-        self.order.setText(_translate("MainWindow", "ZATWIERDŹ"))
-        self.wipe.setText(_translate("MainWindow", "WYCZYŚĆ"))
+        self.order.setText(_translate("MainWindow", "&ZATWIERDŹ"))
+        self.wipe.setText(_translate("MainWindow", "&WYCZYŚĆ"))

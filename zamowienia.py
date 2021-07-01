@@ -21,7 +21,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         user_password = str(self.input_passwd.text())
         db = Database.DataBase()
         db.create_connection()
-        #user_login = "admin"; user_password = "qwerty"   # TODO always logged as admin - remove it later
+        user_login = "admin"; user_password = "qwerty"   # TODO always logged as admin - remove it later
         login_auth = (user_login, user_password)
 
         if db.verify_user(login_auth):
@@ -145,6 +145,4 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     ui = Controller()
-
-#   MainWindow.setEnabled(False)
     sys.exit(app.exec_())
