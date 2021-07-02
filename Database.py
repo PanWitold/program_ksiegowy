@@ -82,7 +82,6 @@ class DataBase:
         username = user_data[0]
         userpass = user_data[1]
         try:
-            db_type = type+"_access"
             cur = self.conn.cursor()
             if type == "order":
                 cur.execute("SELECT password,seed "
@@ -125,8 +124,8 @@ class DataBase:
         try:
             for i in range(0, int(value)):
                 cur = self.conn.cursor()
-                cur.execute(f'''insert into products({list_of_parameters}) values
-                                        ({"?"+",?"* (len(parameters)-1)})''', parameters)
+                cur.execute(f'''insert into products(status,{list_of_parameters}) values
+                                        (0,{"?"+",?"* (len(parameters)-1)})''', parameters)
                 if cur.rowcount < 1:  # if not added to db
                     logging.warning(f"Błąd przy dodaniu do db")
                     return False
@@ -141,19 +140,42 @@ class DataBase:
             return False
         return True
 
+    def search_product(self, product_code):
+        cur = self.conn.cursor()
+        cur.execute(f'select code, date_ordered, orderer, note, id from products '
+                    f'where code == :code and date_delivered is NULL order by date_ordered asc limit 1;',
+                    {"code": product_code})
+        return cur.fetchone()
 
+    def update_order(self, product_id, nr_delivery):
+        cur = self.conn.cursor()
+        try:
+            cur.execute(f'UPDATE products set date_delivered=CURRENT_TIMESTAMP, nr_delivery = :nr_delivery where id = :id',
+                        {"id": product_id, "nr_delivery": nr_delivery})
+        except sqlite3.OperationalError as e:
+            print(e)
+            return False
+        if cur.rowcount < 1:  # if not added to db
+            logging.warning(f"Błąd przy dodaniu do db")
+            return False
+        else:
+            self.conn.commit()
+            print("zaktualizowano")
+            return True
 
+'''
 # Add a user
-#username = 'admin'  # The users username
-#password = 'qwerty'  # The users password
+username = 'admin'  # The users username
+password = 'qwerty'  # The users password
 
-'''connect = DataBase()
+connect = DataBase()
 connect.create_connection()
 
 user_data = (username, password, 1, 0)   # when adding (login, passwd, order_access, delivery_access)
 user_data_to_verify = (username, password)          # when logging
-'''
+
 #print(connect.insert_user(user_data))
 #print(connect.verify_user(user_data_to_verify, type="order"))
 
 #for i in (connect.list_all_users()): print(i)
+'''

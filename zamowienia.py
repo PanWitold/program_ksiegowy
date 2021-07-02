@@ -7,7 +7,6 @@ from templates.zamowienia import main, login, order
 
 class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
     logged = QtCore.pyqtSignal()
-    curr_user = "GREG"
 
     def __init__(self, parent=None):
         super(Login_window, self).__init__(parent)
@@ -21,7 +20,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         user_password = str(self.input_passwd.text())
         db = Database.DataBase()
         db.create_connection()
-        user_login = "admin"; user_password = "qwerty"   # TODO always logged as admin - remove it later
+        #user_login = "admin"; user_password = "qwerty"   # always logged as admin - remove it later
         login_auth = (user_login, user_password)
 
         if db.verify_user(login_auth, type="order"):
@@ -44,7 +43,6 @@ class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
     def __init__(self, parent=None):
         super(Main_window, self).__init__(parent)
         self.setupUi(self)
-        #self.username.setText(curr_user)
         self.order.clicked.connect(self.order_product)
 
     def order_product(self):
