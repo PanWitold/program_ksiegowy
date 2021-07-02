@@ -24,7 +24,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         user_login = "admin"; user_password = "qwerty"   # TODO always logged as admin - remove it later
         login_auth = (user_login, user_password)
 
-        if db.verify_user(login_auth):
+        if db.verify_user(login_auth, type="order"):
             print("Authorization passed")
             self.curr_user = user_login
             self.logged.emit()
@@ -90,6 +90,7 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         self.tableWidget.setColumnCount(4)
         self.wipe.clicked.connect(self.del_button)
         self.apply.clicked.connect(self.confirm_order)
+        self.listofparameters = []
 
     def add_table(self, table_list):
         for i in range(1, len(table_list)):
@@ -102,10 +103,18 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         self.close()
 
     def confirm_order(self):
-        # TODO wklepanie do bazy danych tabeli
-        correctly_added = True # TODO
+        db = Database.DataBase()
+        db.create_connection()
+        params = self.listofparameters
+        orderer = params[0]
+        code = params[1]
+        info = params[2]
+        val = params[3]
+        note = params[4]
+        correctly_added = db.add_order(orderer, code, info, val, note)
         if correctly_added:
             self.show_msg("Dodano", "Zamówienie zostało złożone")
+            self.close()
         else:
             self.show_error("Błąd!", "Błąd przy dodawaniu do bazy danych!\nSprawdź połączenie z internetem.\n"
                                      "Jeśli nie pomoże, skontaktuj się z PCLAND")
@@ -137,8 +146,8 @@ class Controller:
     def prepare_order_table(self):
         table = self.main_window.order_table
         self.order_window.add_table(table)
+        self.order_window.listofparameters = table
         self.order_window.show()
-
 
 
 if __name__ == "__main__":

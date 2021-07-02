@@ -36,7 +36,7 @@ class DataBase:
         :return: list of users with: [id, name, user_name]
         """
         cur = self.conn.cursor()
-        cur.execute("SELECT id,name, user_name FROM users")
+        cur.execute("SELECT * FROM users")
         rows = cur.fetchall()
         return rows
 
@@ -56,8 +56,8 @@ class DataBase:
         user_data.append(salt)
         user_params = tuple(user_data)
         try:
-            cur.execute(f'''insert into users(name,user_name, password,seed) values
-                        (?,?,?,?)''', user_params)
+            cur.execute(f'''insert into users(name, password, seed, order_access, delivery_access) values
+                        (?,?,?,?,?)''', user_params)
             if cur.rowcount < 1:    # if not added to db
                 logging.warning(f"Błąd przy dodaniu do db")
             else:
@@ -72,7 +72,7 @@ class DataBase:
             return -2
         return 1
 
-    def verify_user(self, user_data):
+    def verify_user(self, user_data, type= "order"):
         """
             Query all rows in the table
             :param self: the object
@@ -82,9 +82,18 @@ class DataBase:
         username = user_data[0]
         userpass = user_data[1]
         try:
+            db_type = type+"_access"
             cur = self.conn.cursor()
-            cur.execute("SELECT password,seed "
-                        "FROM users where name=:username", {"username": username})
+            if type == "order":
+                cur.execute("SELECT password,seed "
+                            "FROM users where name=:username and order_access == 1;", {"username": username})
+            elif type == "delivery":
+                cur.execute("SELECT password,seed "
+                            "FROM users where name=:username and delivery_access == 1;", {"username": username})
+            else:
+                print("Wrong conditions!\nProgram have only 2 modules")  # debuginfo
+                return False
+
             real_user = cur.fetchone()
             user_real_key = real_user[0]
             seed = real_user[1]
@@ -96,18 +105,55 @@ class DataBase:
         else:
             return False
 
+    def add_order(self, orderer, code, info, value, note):
+        list_of_parameters= ""
+        parameters = []
+        if len(orderer) >= 1:
+            list_of_parameters += "orderer"
+            parameters.append(orderer)
+        if len(code) >= 1:
+            list_of_parameters += ", code"
+            parameters.append(code)
+        if len(info) >= 1:
+            list_of_parameters += ", info"
+            parameters.append(info)
+        if len(note) >= 1:
+            list_of_parameters += ", note"
+            parameters.append(note)
+
+        print(list_of_parameters)
+        try:
+            for i in range(0, int(value)):
+                cur = self.conn.cursor()
+                cur.execute(f'''insert into products({list_of_parameters}) values
+                                        ({"?"+",?"* (len(parameters)-1)})''', parameters)
+                if cur.rowcount < 1:  # if not added to db
+                    logging.warning(f"Błąd przy dodaniu do db")
+                    return False
+                else:
+                    self.conn.commit()
+        except ValueError as e:
+            print(e)
+            return False
+        except sqlite3.OperationalError as e:
+            logging.warning(e)
+            print("Blad polaczenia z baza danych!!\n", e)
+            return False
+        return True
+
+
 
 # Add a user
-'''username = 'adkmin'  # The users username
-password = 'qwerty'  # The users password
+#username = 'admin'  # The users username
+#password = 'qwerty'  # The users password
 
-connect = DataBase()
+'''connect = DataBase()
 connect.create_connection()
 
-user_data = (username, "Administrator", password)   # when adding (nick, name, passwd)
+user_data = (username, password, 1, 0)   # when adding (login, passwd, order_access, delivery_access)
 user_data_to_verify = (username, password)          # when logging
-
+'''
 #print(connect.insert_user(user_data))
-print(connect.verify_user(user_data_to_verify))'''
+#print(connect.verify_user(user_data_to_verify, type="order"))
 
 #for i in (connect.list_all_users()): print(i)
