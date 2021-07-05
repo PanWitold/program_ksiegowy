@@ -56,7 +56,7 @@ class DataBase:
         user_data.append(salt)
         user_params = tuple(user_data)
         try:
-            cur.execute(f'''insert into users(name, password, seed, order_access, delivery_access) values
+            cur.execute(f'''insert into users(name, password, seed, order_access(1/0), delivery_access(1/0)) values
                         (?,?,?,?,?)''', user_params)
             if cur.rowcount < 1:    # if not added to db
                 logging.warning(f"Błąd przy dodaniu do db")
