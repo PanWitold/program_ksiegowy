@@ -1,4 +1,4 @@
-import Database
+import database_mysql as Database
 import os
 import datetime
 import xlsxwriter
@@ -42,7 +42,7 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_MainWindow):
             #user_login = "admin1"; user_password = "qwerty"  # always logged as admin - remove it later
             login_auth = (user_login, user_password)
 
-            if db.verify_user(login_auth, type="delivery"):
+            if db.verify_user(login_auth, "delivery"):
                 print("Authorization passed")
                 self.curr_user = user_login
                 self.logged.emit()
@@ -50,6 +50,7 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_MainWindow):
             else:
                 self.statusbar.showMessage("Błędny login/hasło")
                 self.show_message("Zły login/hasło", "Niepoprawne dane logowania")
+                self.login.setFocus()
 
         print(self.curr_user, self.nr_delivery)
 
@@ -176,7 +177,6 @@ class Controller:
         note = self.orderer_list[3]
         orderer = self.orderer_list[2]
         self.added_table.append([order_date, code, note, orderer])
-        pass
 
     def save_and_exit(self):
         global dir_output_files

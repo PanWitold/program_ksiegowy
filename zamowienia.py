@@ -1,4 +1,4 @@
-import Database
+import database_mysql as Database
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
@@ -23,7 +23,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         #user_login = "admin"; user_password = "qwerty"   # always logged as admin - remove it later
         login_auth = (user_login, user_password)
 
-        if db.verify_user(login_auth, type="order"):
+        if db.verify_user(login_auth, "order"):
             print("Authorization passed")
             self.curr_user = user_login
             self.logged.emit()
@@ -72,6 +72,7 @@ class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
     def show_warning(self, title, message):
         QMessageBox.warning(self, title, message)
+        self.code.setFocus()
 
 
 class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
@@ -112,6 +113,7 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         correctly_added = db.add_order(orderer, code, info, val, note)
         if correctly_added:
             self.show_msg("Dodano", "Zamówienie zostało złożone")
+            self.wiped.emit()
             self.close()
         else:
             self.show_error("Błąd!", "Błąd przy dodawaniu do bazy danych!\nSprawdź połączenie z internetem.\n"
@@ -132,9 +134,14 @@ class Controller:
 
         self.login.logged.connect(self.get_username_from_login)
         self.main_window.ordered.connect(self.prepare_order_table)
+        self.order_window.wiped.connect(self.wipe_main_window)
         self.login.show()
         #self.order_window.show()
         #self.get_username_from_login()
+
+    def wipe_main_window(self):
+        self.main_window.wipe.click()
+        self.main_window.code.setFocus()
 
     def get_username_from_login(self):
         username = self.login.curr_user
