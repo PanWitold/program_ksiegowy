@@ -3,15 +3,15 @@ from mysql.connector import connect, Error
 from datetime import datetime
 import hashlib
 import os
-
+import passwords
 
 class DataBase:
 
     def __init__(self):
-        self.db_host = "192.168.0.171"
-        self.db_user = "B5uc6E"
-        self.db_password = "JQqsvCk8VT"
-        self.db_database = "products"
+        self.db_host = passwords.db_host
+        self.db_user = passwords.db_user
+        self.db_password = passwords.db_password
+        self.db_database = passwords.db_database
         self.mydb = None
         self.last_complete_list = []
 
@@ -24,11 +24,13 @@ class DataBase:
             self.mydb = mysql.connector.connect(host=self.db_host,
                                                 user=self.db_user,
                                                 password=self.db_password,
-                                                database=self.db_database)
+                                                database=self.db_database,
+                                                connection_timeout=2)
             if self.mydb.is_connected():
-                return self
+                return self.mydb
         except Error as e:
             print(e)
+            return None
 
     def add_user(self, login_params):
         """
@@ -56,8 +58,7 @@ class DataBase:
         except mysql.connector.errors.OperationalError as e:
             print(e)
             return -1
-        finally:
-            return 1
+        return 1
 
     def verify_user(self, user_data, _type="order"):
         """
@@ -106,7 +107,7 @@ class DataBase:
         if len(note) >= 1:
             list_of_parameters += ", note"
             parameters.append(note)
-        print(list_of_products,list_of_parameters, sep="\n")
+        print(list_of_products, list_of_parameters, sep="\n")
         query = f'''insert into products(status,{list_of_parameters}) values (0, {"%s"+", %s"* (len(parameters)-1)})'''
         print(query)
         for i in range(0, int(value)):

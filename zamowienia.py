@@ -10,6 +10,7 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
 
     def __init__(self, parent=None):
         super(Login_window, self).__init__(parent)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.setupUi(self)
         self.pushButton.clicked.connect(self.verify_user)
         self.input_login.textChanged.connect(self.statusbar.clearMessage)
@@ -19,8 +20,11 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
         user_login = self.input_login.text()
         user_password = str(self.input_passwd.text())
         db = Database.DataBase()
-        db.create_connection()
-        #user_login = "admin"; user_password = "qwerty"   # always logged as admin - remove it later
+        if db.create_connection() is None:
+            self.showDialog("Brak połączenia z serwerem!", "Wystąpił błąd przy próbie połączenia z serwerem.\n"
+                                                           "Sprawdź połączenie internetowe lub spróbuj ponownie później."
+                                                           "\nJeżeli to nie przyniesie efektów: skontaktuj się z PCLAND")
+            return False
         login_auth = (user_login, user_password)
 
         if db.verify_user(login_auth, "order"):
@@ -30,10 +34,10 @@ class Login_window(QtWidgets.QMainWindow, login.Ui_LOGIN):
             self.close()
         else:
             self.statusbar.showMessage("Błędny login/hasło")
-            self.showDialog()
+            self.showDialog("Błąd!", "Błędny login/hasło!")
 
-    def showDialog(self):
-        QMessageBox.critical(self, "Błąd!", "Błędny login/hasło!")
+    def showDialog(self, title, msg):
+        QMessageBox.critical(self, title, msg)
 
 
 class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
@@ -42,6 +46,7 @@ class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(Main_window, self).__init__(parent)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.setupUi(self)
         self.order.clicked.connect(self.order_product)
 
@@ -78,12 +83,12 @@ class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
 class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
     confirmed = QtCore.pyqtSignal()
     wiped = QtCore.pyqtSignal()
-
     headers = ["kod", "opis", "sztuk", "notatka"]
 
     def __init__(self, parent):
         self.parent = parent
         super(OrderWindow, self).__init__(parent)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.setupUi(self)
         self.tableWidget.setRowCount(1)
         self.tableWidget.setColumnCount(4)
@@ -131,13 +136,10 @@ class Controller:
         self.login = Login_window()
         self.main_window = Main_window()
         self.order_window = OrderWindow(self.main_window)
-
         self.login.logged.connect(self.get_username_from_login)
         self.main_window.ordered.connect(self.prepare_order_table)
         self.order_window.wiped.connect(self.wipe_main_window)
         self.login.show()
-        #self.order_window.show()
-        #self.get_username_from_login()
 
     def wipe_main_window(self):
         self.main_window.wipe.click()

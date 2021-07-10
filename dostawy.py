@@ -18,6 +18,7 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_MainWindow):
     def __init__(self, parent=None):
         super(LoginWindow, self).__init__(parent)
         self.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.login.textChanged.connect(self.statusbar.clearMessage)
         self.password.textChanged.connect(self.statusbar.clearMessage)
         self.loginButton.clicked.connect(self.log_user)
@@ -27,7 +28,11 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_MainWindow):
         self.nr_delivery = self.nrOfDelivery.text()
         self.curr_user = self.login.text()
         db = Database.DataBase()
-        db.create_connection()
+        if db.create_connection() is None:
+            self.show_message("Brak połączenia z serwerem!", "Wystąpił błąd przy próbie połączenia z serwerem.\n"
+                                                           "Sprawdź połączenie internetowe lub spróbuj ponownie później."
+                                                           "\nJeżeli to nie przyniesie efektów: skontaktuj się z PCLAND")
+            return False
         if self.curr_user == "" or password == "":
             print("Input name/password")
             self.show_message("Błąd.", "Wpisz login/hasło")
@@ -39,7 +44,6 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_MainWindow):
             user_password = self.password.text()
             db = Database.DataBase()
             db.create_connection()
-            #user_login = "admin1"; user_password = "qwerty"  # always logged as admin - remove it later
             login_auth = (user_login, user_password)
 
             if db.verify_user(login_auth, "delivery"):
@@ -67,6 +71,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.pushButton.clicked.connect(self.order_product)
         self.pushButton.clicked.connect(self.product_code.clear)
         self.pushButton_2.clicked.connect(self.end)
@@ -103,6 +108,7 @@ class OrderedTable(QtWidgets.QMainWindow, ordered_table.Ui_MainWindow):
     def __init__(self, parent):
         super(OrderedTable, self).__init__(parent)
         self.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.pushButton.clicked.connect(self.update_orderer)   # zatwierdz
         self.pushButton_2.clicked.connect(self.close)          # usuń
         self.pushButton_3.clicked.connect(self.end_ordered)    # koniec - zamknij wszystkie okna
@@ -184,8 +190,10 @@ class Controller:
             self.main_window.show_message("Koniec pracy.", "Brak zaktualizowanych produktów")
             self.main_window.close()
             self.ordered_table.close()
+        if not os.path.isdir(dir_output_files):
+            os.mkdir(dir_output_files)
         today_date = str(datetime.datetime.today()).split()[0]
-        xlsx_namefile = f'{dir_output_files}\DOSTAWA_{self.nr_delivery}_{today_date}.xlsx'
+        xlsx_namefile = f'{dir_output_files}/DOSTAWA_{self.nr_delivery}_{today_date}.xlsx'
         columns_name = ["data_zamówienia", "kod", "notatka", "zamawiający"]
         if os.path.isfile(xlsx_namefile):
             print("File exists!")
@@ -200,7 +208,7 @@ class Controller:
             for i in range(0, len(self.added_table)):
                 worksheet.write_row(i+1, 0, self.added_table[i])
             workbook.close()
-            self.ordered_table.show_warning_message("Zapisano", f"Plik dostawy został zapisany jako: {xlsx_namefile}")
+            self.ordered_table.show_warning_message("Zapisano", f"Plik dostawy został zapisany jako: {xlsx_namefile.split('/')[1]}")
             self.main_window.close()
             self.ordered_table.close()
 
