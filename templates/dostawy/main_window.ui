@@ -84,6 +84,11 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>product_code</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_2</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
