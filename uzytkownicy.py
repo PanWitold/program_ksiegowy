@@ -1,5 +1,4 @@
-import database_mysql as Database
-import sys
+import Database #database_mysql as Database
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from templates.dodawanie_kont import login, add_user

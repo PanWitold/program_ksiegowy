@@ -4,8 +4,8 @@
 block_cipher = None
 
 
-a = Analysis(['zamowienia.pyw'],
-             pathex=['C:\\Users\\PC\\Desktop\\serwer\\!serwer'],
+a = Analysis(['C:\\Users\\Lenovo\\PycharmProjects\\program_ksiegowy\\zamowienia.py'],
+             pathex=['C:\\Users\\Lenovo\\PycharmProjects\\program_ksiegowy'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -31,4 +31,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False , icon='icon.ico')
+          console=True )

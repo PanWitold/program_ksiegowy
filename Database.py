@@ -1,10 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
 from sqlite3 import Error
 import sqlite3
-import time
 import logging
-import sys
-
 import hashlib
 import os
 
@@ -162,20 +158,3 @@ class DataBase:
             self.conn.commit()
             print("zaktualizowano")
             return True
-
-'''
-# Add a user
-username = 'admin'  # The users username
-password = 'qwerty'  # The users password
-
-connect = DataBase()
-connect.create_connection()
-
-user_data = (username, password, 1, 0)   # when adding (login, passwd, order_access, delivery_access)
-user_data_to_verify = (username, password)          # when logging
-
-#print(connect.insert_user(user_data))
-#print(connect.verify_user(user_data_to_verify, type="order"))
-
-#for i in (connect.list_all_users()): print(i)
-'''

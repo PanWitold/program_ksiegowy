@@ -1,12 +1,11 @@
 import mysql.connector
-from mysql.connector import connect, Error
-from datetime import datetime
+from mysql.connector import Error
 import hashlib
 import os
 import passwords
 
-class DataBase:
 
+class DataBase:
     def __init__(self):
         self.db_host = passwords.db_host
         self.db_user = passwords.db_user
@@ -62,7 +61,7 @@ class DataBase:
 
     def verify_user(self, user_data, _type="order"):
         """
-            Query all rows in the table
+            Taking first parameter and validate it with database
             :param self: the object
             :param user_data: list with user data(user_name, password)
             :param _type: choose a module to users_verify
@@ -92,6 +91,16 @@ class DataBase:
             return False
 
     def add_order(self, orderer, code, info, value, note):
+        """
+        Add an order to database
+        :param self: the object
+        :param orderer: orderer
+        :param code: code
+        :param info: info
+        :param value: how many iterations of adding
+        :param note: note
+        :return: True/False
+        """
         list_of_parameters = ""  # as str
         list_of_products = []
         parameters = []
@@ -136,12 +145,13 @@ class DataBase:
         return True
 
     def search_product(self, product_code):
-        '''
-            Used to search oldest product pointed by code
-            :param self: the obiect
-            :param product_code: product ID
-            :return: product: code, date_ordered, orderer, note, id
-            '''
+        """
+        Used to search oldest product pointed by code
+        :param self: the object
+        :param product_code: product ID in database
+        :return: product: code, date_ordered, orderer, note, id
+        :return: False if error
+        """
         query = (f'select code, date_ordered, orderer, note, id from products where code = %s and date_delivered is NULL order by date_ordered asc limit 1;')
         cur = self.mydb.cursor()
         try:
@@ -161,6 +171,13 @@ class DataBase:
             return False
 
     def update_order(self, product_id, nr_delivery):
+        """
+        Used to search oldest product pointed by code
+        :param self: the object
+        :param product_code: product ID in database
+        :return: product: code, date_ordered, orderer, note, id
+        :return: False if error
+        """
         query = 'UPDATE products set date_delivered=CURRENT_TIMESTAMP, nr_delivery = %s where id = %s;'
         values = (nr_delivery, product_id)
         print(query, values, sep="\n")
@@ -180,21 +197,3 @@ class DataBase:
         else:
             print("zaktualizowano")
             return True
-
-
-username = "admin"
-password = "qwerty"
-user_params = (username, password, 1, 0)   # when adding (login, passwd, order_access, delivery_access)
-user_params_login = (username, password)
-#salt = os.urandom(32)  # A new salt for this user
-#key = hashlib.pbkdf2_hmac('sha256', user_params[1].encode('utf-8'), salt, 100000)
-
-#db = DataBase()
-#db.create_connection()
-#db.add_user(user_params)
-#print(db.verify_user(user_params_login))
-#print(db.add_order(username, "322", "", 1, ""))
-#db.search_product("123")
-#db.update_order("5", "recznie")
-#db.commit_changes()
-#print(f"salt: len:{len(salt)} text:{salt}\npasswd: len:{len(key)} text: {key}")
