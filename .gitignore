@@ -3,4 +3,7 @@
 /passwords.py
 /dist/
 /build/
+/database.db
+/dokumentacja/*.docx
 /*.exe
+/*.spec
