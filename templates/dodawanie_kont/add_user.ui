@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>462</width>
-    <height>253</height>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,285 +16,211 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
-     <widget class="QFrame" name="frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-           <weight>75</weight>
-           <italic>true</italic>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>DODAWANIE UŻYTKOWNIKÓW</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>LOGIN</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>HASLO</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>POWTORZ HASLO</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <widget class="QLineEdit" name="login">
-                 <property name="statusTip">
-                  <string/>
-                 </property>
-                 <property name="whatsThis">
-                  <string/>
-                 </property>
-                 <property name="accessibleName">
-                  <string/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="placeholderText">
-                  <string>PODAJ LOGIN UZYTKOWNIKA</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="passwd">
-                 <property name="echoMode">
-                  <enum>QLineEdit::Password</enum>
-                 </property>
-                 <property name="placeholderText">
-                  <string>WPISZ HASŁO</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="con_passwd">
-                 <property name="echoMode">
-                  <enum>QLineEdit::Password</enum>
-                 </property>
-                 <property name="placeholderText">
-                  <string>POTWIERDŹ HASŁO</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QSplitter" name="splitter_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_5">
-             <property name="frameShape">
-              <enum>QFrame::Box</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-             <property name="text">
-              <string>WYBIERZ MODUŁ UŻYTKOWNIKA</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QRadioButton" name="order">
-               <property name="text">
-                <string>ZAMÓWIENIA</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="delivery">
-               <property name="text">
-                <string>DOSTAWY</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="both">
-             <property name="text">
-              <string>DOSTĘP DO OBU MODUŁÓW</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>258</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="wipe">
-             <property name="text">
-              <string>WYCZYSC</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="submit">
-             <property name="text">
-              <string>ZATWIERDZ</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
+      <widget class="QWidget" name="tabWidgetPage1">
+       <attribute name="title">
+        <string>dodaj użytkownika</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <italic>true</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>DODAWANIE UŻYTKOWNIKÓW</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>LOGIN</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>HASLO</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>POWTORZ HASLO</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                 <widget class="QLineEdit" name="login">
+                  <property name="statusTip">
+                   <string/>
+                  </property>
+                  <property name="whatsThis">
+                   <string/>
+                  </property>
+                  <property name="accessibleName">
+                   <string/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="placeholderText">
+                   <string>PODAJ LOGIN UZYTKOWNIKA</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="passwd">
+                  <property name="echoMode">
+                   <enum>QLineEdit::Password</enum>
+                  </property>
+                  <property name="placeholderText">
+                   <string>WPISZ HASŁO</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="con_passwd">
+                  <property name="echoMode">
+                   <enum>QLineEdit::Password</enum>
+                  </property>
+                  <property name="placeholderText">
+                   <string>POTWIERDŹ HASŁO</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QSplitter" name="splitter_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="frameShape">
+               <enum>QFrame::Box</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="text">
+               <string>WYBIERZ MODUŁ UŻYTKOWNIKA</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QRadioButton" name="order">
+                <property name="text">
+                 <string>ZAMÓWIENIA</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="delivery">
+                <property name="text">
+                 <string>DOSTAWY</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="both">
+              <property name="text">
+               <string>DOSTĘP DO OBU MODUŁÓW</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>258</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="wipe">
+              <property name="text">
+               <string>WYCZYSC</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="submit">
+              <property name="text">
+               <string>ZATWIERDZ</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>both</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>order</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>94</x>
-     <y>191</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>213</x>
-     <y>170</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>both</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>delivery</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>116</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>283</x>
-     <y>167</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>wipe</sender>
-   <signal>clicked()</signal>
-   <receiver>login</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>329</x>
-     <y>212</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>390</x>
-     <y>65</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>wipe</sender>
-   <signal>clicked()</signal>
-   <receiver>passwd</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>299</x>
-     <y>215</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>336</x>
-     <y>78</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>wipe</sender>
-   <signal>clicked()</signal>
-   <receiver>con_passwd</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>302</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>314</x>
-     <y>110</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -19,6 +19,8 @@ class DataBase:
         specified by the self.database
         :return: Connection object or None
         """
+        #todo do usuniecia
+        return True
         try:
             self.mydb = mysql.connector.connect(host=self.db_host,
                                                 user=self.db_user,
@@ -59,25 +61,21 @@ class DataBase:
             return -1
         return 1
 
-    def verify_user(self, user_data, _type="order"):
+    def verify_user(self, user_data):
         """
             Taking first parameter and validate it with database
             :param self: the object
             :param user_data: list with user data(user_name, password)
-            :param _type: choose a module to users_verify
             :return: True/False
             """
+        #todo usuniecie
+        return [1, 1]
+
         username = (user_data[0],)
         userpass = user_data[1]
         try:
             cur = self.mydb.cursor()
-            if _type == "order":
-                cur.execute("SELECT password,seed FROM users where name= %s and order_access = 1;", username)
-            elif _type == "delivery":
-                cur.execute("SELECT password,seed  FROM users where name= %s and delivery_access = 1;", username)
-            else:
-                print("Wrong conditions!\nProgram have only 2 modules")
-                return False
+            cur.execute("SELECT password,seed  FROM users where name= %s and delivery_access = 1;", username)
 
             real_user = cur.fetchone()
             user_real_key = real_user[0]
