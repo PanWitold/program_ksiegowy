@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>999</width>
-    <height>558</height>
+    <width>566</width>
+    <height>323</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
@@ -90,6 +90,9 @@
                   <property name="text">
                    <string/>
                   </property>
+                  <property name="maxLength">
+                   <number>32</number>
+                  </property>
                   <property name="placeholderText">
                    <string>PODAJ LOGIN</string>
                   </property>
@@ -97,6 +100,9 @@
                 </item>
                 <item>
                  <widget class="QLineEdit" name="passwd">
+                  <property name="maxLength">
+                   <number>32</number>
+                  </property>
                   <property name="echoMode">
                    <enum>QLineEdit::Password</enum>
                   </property>
@@ -107,6 +113,9 @@
                 </item>
                 <item>
                  <widget class="QLineEdit" name="con_passwd">
+                  <property name="maxLength">
+                   <number>32</number>
+                  </property>
                   <property name="echoMode">
                    <enum>QLineEdit::Password</enum>
                   </property>
@@ -215,7 +224,51 @@
        <attribute name="title">
         <string>użytkownicy</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_6">
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>użytkownik</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>hasło</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>zamówienia</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>dostawy</string>
+           </property>
+          </column>
+         </widget>
+        </item>
         <item row="1" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
@@ -229,6 +282,13 @@
            <widget class="QPushButton" name="edit_passwd_user_button">
             <property name="text">
              <string>ZMIEŃ HASŁO</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="access_button">
+            <property name="text">
+             <string>ZMIEŃ UPRAWNIENIA</string>
             </property>
            </widget>
           </item>
@@ -275,7 +335,7 @@
                    <item>
                     <widget class="QLineEdit" name="remove_user_id">
                      <property name="inputMask">
-                      <string>0000</string>
+                      <string>000000000000000</string>
                      </property>
                     </widget>
                    </item>
@@ -329,6 +389,13 @@
                </property>
               </widget>
              </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="button_modify_password">
+               <property name="text">
+                <string>ZATWIERDŹ</string>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
@@ -361,22 +428,100 @@
                  <item>
                   <widget class="QLineEdit" name="edit_ID">
                    <property name="inputMask">
-                    <string>00000</string>
+                    <string>000000000000000</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="edit_passwd"/>
+                  <widget class="QLineEdit" name="edit_passwd">
+                   <property name="maxLength">
+                    <number>32</number>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="edit_repasswd"/>
+                  <widget class="QLineEdit" name="edit_repasswd">
+                   <property name="maxLength">
+                    <number>32</number>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
               </layout>
              </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_access">
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Zmień uprawnienia</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>Numer ID</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="access_id">
+                 <property name="inputMask">
+                  <string>000000000000000</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
              <item row="2" column="0">
-              <widget class="QPushButton" name="button_modify_password">
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QCheckBox" name="check_orders">
+                 <property name="text">
+                  <string>Zamówienia</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="check_delivery">
+                 <property name="text">
+                  <string>Dostawy</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="access_confirm">
                <property name="text">
                 <string>ZATWIERDŹ</string>
                </property>
@@ -386,50 +531,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item row="0" column="0">
-         <widget class="QTableWidget" name="tableWidget">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="tabKeyNavigation">
-           <bool>false</bool>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>false</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>false</bool>
-          </property>
-          <column>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>użytkownik</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>hasło</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>zamówienia</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>dostawy</string>
-           </property>
-          </column>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -468,12 +569,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>135</x>
-     <y>471</y>
+     <x>148</x>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
-     <x>112</x>
-     <y>436</y>
+     <x>126</x>
+     <y>243</y>
     </hint>
    </hints>
   </connection>
@@ -484,12 +585,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>210</x>
-     <y>474</y>
+     <x>223</x>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
-     <x>531</x>
-     <y>433</y>
+     <x>540</x>
+     <y>243</y>
     </hint>
    </hints>
   </connection>
@@ -500,12 +601,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>778</x>
-     <y>507</y>
+     <x>460</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>565</x>
-     <y>295</y>
+     <x>539</x>
+     <y>160</y>
     </hint>
    </hints>
   </connection>
@@ -516,12 +617,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>748</x>
-     <y>509</y>
+     <x>460</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>736</x>
-     <y>344</y>
+     <x>539</x>
+     <y>186</y>
     </hint>
    </hints>
   </connection>
@@ -532,12 +633,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>779</x>
-     <y>512</y>
+     <x>460</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>656</x>
-     <y>271</y>
+     <x>539</x>
+     <y>134</y>
     </hint>
    </hints>
   </connection>
@@ -548,12 +649,12 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>265</x>
-     <y>273</y>
+     <x>278</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>445</x>
-     <y>357</y>
+     <x>362</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>
@@ -564,12 +665,28 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>493</x>
-     <y>283</y>
+     <x>146</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>418</x>
-     <y>312</y>
+     <x>161</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>access_button</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_access</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>364</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>164</y>
     </hint>
    </hints>
   </connection>

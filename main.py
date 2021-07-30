@@ -2,6 +2,7 @@ import database_mysql as Database
 import os
 import datetime
 import xlsxwriter
+import csv
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
@@ -11,7 +12,19 @@ from templates.zamowienia import main, order
 from templates import login, moduly
 
 dir_output_files_delivery = "dostawa"    # directory will be created if no exists
+dir_output_files_orders = "zamowienia"
 
+
+def csv_writer(filename, list_params):
+    headers = ["kod", "opis", "sztuk", "notatka"]
+    add_headers = True
+    if os.path.isfile(filename):
+        add_headers = False
+    with open(filename, 'a', newline="") as csvfile:
+        csvwriter = csv.writer(csvfile)
+        if add_headers:
+            csvwriter.writerow(headers)
+        csvwriter.writerow(list_params)
 
 class LoginWindow(QtWidgets.QMainWindow, login.Ui_LOGIN):
     logged = QtCore.pyqtSignal()
@@ -38,17 +51,17 @@ class LoginWindow(QtWidgets.QMainWindow, login.Ui_LOGIN):
         login_auth = (user_login, user_password)
         db_return = db.verify_user(login_auth)
 
-        if db_return == [1,1]:
-            #todo zmienić rodzaj weryfikacji
-            print("Authorization passed")
+        if db_return == [1, 1]:
             self.logged.emit()
             self.close()
-        elif db_return == [0,1]:
+        elif db_return == [0, 1]:
             self.delivery.emit()
             self.close()
-        elif db_return == [1,0]:
+        elif db_return == [1, 0]:
             self.order.emit()
             self.close()
+        elif db_return == [0, 0]:
+            self.showDialog("Brak uprawnień!", "Na koncie nie ma uprawnień do logowania!")
         else:
             self.statusbar.showMessage("Błędny login/hasło")
             self.showDialog("Błąd!", "Błędny login/hasło!")
@@ -122,7 +135,6 @@ class OrderedTable(QtWidgets.QMainWindow, ordered_table.Ui_MainWindow):
 
     def add_table(self, table_list):
         for i in range(0, len(table_list)-1):
-            print(table_list[i])
             self.tableWidget.setRowCount(1)
             if str(table_list[i]) == "None":
                 self.tableWidget.setItem(0, i, QtWidgets.QTableWidgetItem(""))
@@ -262,6 +274,8 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         self.close()
 
     def confirm_order(self):
+        global dir_output_files_orders
+        output_file_dir = f"{dir_output_files_orders}/zamowienie_{str(datetime.datetime.today()).split()[0]}.csv"
         db = Database.DataBase()
         db.create_connection()
         params = self.listofparameters
@@ -272,6 +286,7 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         note = params[4]
         correctly_added = db.add_order(orderer, code, info, val, note)
         if correctly_added:
+            csv_writer(output_file_dir,[orderer, code, info, val, note])
             self.show_msg("Dodano", "Zamówienie zostało złożone")
             self.wiped.emit()
             self.close()
@@ -297,6 +312,7 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
         self.show_passwd_button.clicked.connect(self.show_users_passwd)
         self.button_remove.clicked.connect(self.delete_user)
         self.button_modify_password.clicked.connect(self.edit_password)
+        self.access_confirm.clicked.connect(self.manage_access)
 
     def submited(self):
         password1 = self.passwd.text()
@@ -330,23 +346,26 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
             self.show_warning("Błąd", f"Użytkownik {name} istnieje.\nWybierz inną nazwę.")
         elif ret == -1:
             self.show_warning("Błąd", "Przekroczono czas połączenia, spróbuj ponownie.")
+        self.refresh_users_table()
 
     def refresh_users_table(self, show_passwd=False):
         db = Database.DataBase()
         db.create_connection()
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(0)  # clear data from table
         users = db.list_all_users()
+        try:
+            if type(users) == int:
+                print("Błąd")
+        except TypeError:
+            self.show_warning("Błąd", "Brak użytkowników")
         counter = 0
         for user in users:
-            print(user)
-            rowposition = self.tableWidget.rowCount()
-            self.tableWidget.insertRow(rowposition)
+            self.tableWidget.insertRow(self.tableWidget.rowCount())
             for i in range(0, 5):
                 if not show_passwd and i == 2:
                     self.tableWidget.setItem(counter, i, QtWidgets.QTableWidgetItem("*****"))
                 else:
-                    self.tableWidget.setItem(counter, i, QtWidgets.QTableWidgetItem(user[i]))
+                    self.tableWidget.setItem(counter, i, QtWidgets.QTableWidgetItem(str(user[i])))
             counter += 1
         self.tableWidget.resizeColumnsToContents()
 
@@ -357,9 +376,8 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
         db = Database.DataBase()
         db.create_connection()
         ID = self.remove_user_id.text()
-        self.show_warning("Usuwanie użytkownika", f"Czy na pewno chcesz usunąć użytkownika o ID: {ID}.")
         if db.delete_user(ID):
-            self.show_warning("Usunięto", "Użytkownik został usunięty.")
+            self.show_warning("Usunięto", f"Użytkownik o ID {ID} został usunięty.")
         else:
             self.show_warning("Błąd!", "Nie udało się usunąć użytkownika.\nSprawdź wprowadzone ID")
         self.refresh_users_table()
@@ -367,7 +385,7 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
     def edit_password(self):
         user_id = self.edit_ID.text()
         passwd1 = self.edit_passwd.text()
-        passwd2 = self.edit_repasswd
+        passwd2 = self.edit_repasswd.text()
         db = Database.DataBase()
         db.create_connection()
 
@@ -381,10 +399,32 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
             self.show_warning("Zaktualizowano", "Hasło zostało zaktualizowane")
             self.refresh_users_table()
         else:
-            self.show_warning("Błąd", "Wystąpił nieoczekiwany błąd podczas zmiany hasła.\n Zrestartuj aplikację i spróbuj ponownie.")
+            self.show_warning("Błąd", "Wprowadzono błędne ID użytkownika")
+
+    def manage_access(self):
+        user_id = self.access_id.text()
+        orderers = self.check_orders.isChecked()
+        deliveries = self.check_delivery.isChecked()
+        if orderers:
+            order = 1
+        else:
+            order = 0
+        if deliveries:
+            delivery = 1
+        else:
+            delivery = 0
+        db = Database.DataBase()
+        db.create_connection()
+        if db.update_user_access(user_id, order, delivery):
+            self.show_warning("Zaktualizowano", "Uprawnienia użytkownika zostały zaktualizowane")
+        else:
+            self.show_warning("Błąd", "Podano nieistniejący numer ID")
+        self.access_id.clear()
+        self.refresh_users_table()
 
     def show_warning(self, title, message):
         QMessageBox.warning(self, title, message)
+
 
 
 class Controller:
@@ -439,7 +479,6 @@ class Controller:
         self.window_order_table.add_table(table)
         self.window_order_table.listofparameters = table
         self.window_order_table.show()
-    # todo po zatwierdzeniu
 
     # delivery
     def open_delivery_window(self):
@@ -498,7 +537,9 @@ class Controller:
         self.curr_user = self.login_window.input_login.text()
         self.users_window.frame_remove_user.hide()
         self.users_window.frame_edit_passwd.hide()
+        self.users_window.frame_access.hide()
         self.users_window.show()
+
 
 if __name__ == "__main__":
     import sys
