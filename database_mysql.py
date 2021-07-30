@@ -13,6 +13,7 @@ class DataBase:
         self.db_database = passwords.db_database
         self.mydb = None
         self.last_complete_list = []
+        # todo zmiana haseł użytkowników na jawne
 
     def create_connection(self):
         """ create a database connection to the SQLite database
@@ -41,6 +42,7 @@ class DataBase:
                  -1 if broken connection
                  -2 if user exists
         """
+        return 1
         name = login_params[0]
         salt = os.urandom(32)  # A new salt for this user
         password = hashlib.pbkdf2_hmac('sha256', login_params[1].encode('utf-8'), salt, 100000)
@@ -61,6 +63,34 @@ class DataBase:
             return -1
         return 1
 
+    def list_all_users(self):
+        """
+        Get list with users id, name, password, order access delivery access as lists in list
+        :param self: object of instance
+        :return: list of users i.e. [[1, "admin", "123", 1,1],[2,"admin1","1234",1,0]]
+        """
+        # todo
+        return [["1", "admin", "1dsgdfg2fdsfsdfg3",1,1], ["2", "admin1", "fgdffgfgg12gdf34",1,0]]
+
+    def delete_user(self, user_id):
+        """
+        Delete user using ID
+        :param user_id: User ID
+        :return: True/False
+        """
+        # todo
+        return True
+
+    def modify_user_passwd(self, user_id, new_passwd):
+        """
+        Upadate password by user id
+        :param user_id: User ID
+        :param new_passwd: new password
+        :return: True/False
+        """
+        # todo
+        return True
+
     def verify_user(self, user_data):
         """
             Taking first parameter and validate it with database
@@ -68,12 +98,13 @@ class DataBase:
             :param user_data: list with user data(user_name, password)
             :return: True/False
             """
-        #todo usuniecie
-        return [1, 1]
+        # todo usuniecie
+        return [1, 1]   # każdy login przyjmuje jako
 
         username = (user_data[0],)
         userpass = user_data[1]
         try:
+            # todo zmiana haseł na jawne
             cur = self.mydb.cursor()
             cur.execute("SELECT password,seed  FROM users where name= %s and delivery_access = 1;", username)
 
@@ -99,6 +130,8 @@ class DataBase:
         :param note: note
         :return: True/False
         """
+        # todo usunac
+        return True
         list_of_parameters = ""  # as str
         list_of_products = []
         parameters = []
@@ -150,6 +183,8 @@ class DataBase:
         :return: product: code, date_ordered, orderer, note, id
         :return: False if error
         """
+        # todo usunac
+        return([product_code,"2021-05-05 15:15:15", "orderer", "", 123])
         query = (f'select code, date_ordered, orderer, note, id from products where code = %s and date_delivered is NULL order by date_ordered asc limit 1;')
         cur = self.mydb.cursor()
         try:
@@ -176,6 +211,8 @@ class DataBase:
         :return: product: code, date_ordered, orderer, note, id
         :return: False if error
         """
+        # todo usunac
+        return True
         query = 'UPDATE products set date_delivered=CURRENT_TIMESTAMP, nr_delivery = %s where id = %s;'
         values = (nr_delivery, product_id)
         print(query, values, sep="\n")

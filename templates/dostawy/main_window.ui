@@ -51,14 +51,14 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QLineEdit" name="product_code">
+         <widget class="QLineEdit" name="delivery_nr">
           <property name="maxLength">
            <number>14</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="product_code"/>
         </item>
        </layout>
       </item>
@@ -99,6 +99,7 @@
   </widget>
  </widget>
  <tabstops>
+  <tabstop>delivery_nr</tabstop>
   <tabstop>product_code</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
@@ -106,18 +107,34 @@
  <resources/>
  <connections>
   <connection>
+   <sender>delivery_nr</sender>
+   <signal>returnPressed()</signal>
+   <receiver>product_code</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>468</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>product_code</sender>
    <signal>returnPressed()</signal>
    <receiver>pushButton</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>68</y>
+     <x>397</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
-     <x>459</x>
-     <y>120</y>
+     <x>533</x>
+     <y>145</y>
     </hint>
    </hints>
   </connection>

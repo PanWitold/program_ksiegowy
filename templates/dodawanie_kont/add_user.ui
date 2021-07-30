@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
-    <height>419</height>
+    <width>999</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>dodaj użytkownika</string>
+   <string>UŻYTKOWNICY</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="0">
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
@@ -61,14 +61,14 @@
                 <item>
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>HASLO</string>
+                   <string>HASŁO</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="label_3">
                   <property name="text">
-                   <string>POWTORZ HASLO</string>
+                   <string>POWTÓRZ HASŁO</string>
                   </property>
                  </widget>
                 </item>
@@ -91,7 +91,7 @@
                    <string/>
                   </property>
                   <property name="placeholderText">
-                   <string>PODAJ LOGIN UZYTKOWNIKA</string>
+                   <string>PODAJ LOGIN</string>
                   </property>
                  </widget>
                 </item>
@@ -213,14 +213,365 @@
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Page</string>
+        <string>użytkownicy</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QPushButton" name="remove_user_button">
+            <property name="text">
+             <string>USUŃ UŻYTKOWNIKA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="edit_passwd_user_button">
+            <property name="text">
+             <string>ZMIEŃ HASŁO</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="show_passwd_button">
+            <property name="text">
+             <string>POKAŻ HASŁA</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QFrame" name="frame_remove_user">
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="1" column="0">
+              <widget class="QPushButton" name="button_remove">
+               <property name="text">
+                <string>USUŃ</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="1" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_5"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>Numer ID</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_6">
+                   <item>
+                    <widget class="QLineEdit" name="remove_user_id">
+                     <property name="inputMask">
+                      <string>0000</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::Box</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <property name="text">
+                  <string>Usuń użytkownika</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_edit_passwd">
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Zmień hasło</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <item>
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>Numer ID użytkownika</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>nowe hasło</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_12">
+                   <property name="text">
+                    <string>powtórz nowe hasło</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <item>
+                  <widget class="QLineEdit" name="edit_ID">
+                   <property name="inputMask">
+                    <string>00000</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="edit_passwd"/>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="edit_repasswd"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="button_modify_password">
+               <property name="text">
+                <string>ZATWIERDŹ</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>użytkownik</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>hasło</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>zamówienia</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>dostawy</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>login</tabstop>
+  <tabstop>passwd</tabstop>
+  <tabstop>con_passwd</tabstop>
+  <tabstop>order</tabstop>
+  <tabstop>delivery</tabstop>
+  <tabstop>both</tabstop>
+  <tabstop>wipe</tabstop>
+  <tabstop>submit</tabstop>
+  <tabstop>remove_user_button</tabstop>
+  <tabstop>edit_passwd_user_button</tabstop>
+  <tabstop>show_passwd_button</tabstop>
+  <tabstop>remove_user_id</tabstop>
+  <tabstop>button_remove</tabstop>
+  <tabstop>edit_ID</tabstop>
+  <tabstop>edit_passwd</tabstop>
+  <tabstop>edit_repasswd</tabstop>
+  <tabstop>button_modify_password</tabstop>
+  <tabstop>tableWidget</tabstop>
+ </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>both</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>order</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>135</x>
+     <y>471</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>112</x>
+     <y>436</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>both</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>delivery</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>210</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>433</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wipe</sender>
+   <signal>clicked()</signal>
+   <receiver>passwd</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>778</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wipe</sender>
+   <signal>clicked()</signal>
+   <receiver>con_passwd</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>748</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>736</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wipe</sender>
+   <signal>clicked()</signal>
+   <receiver>login</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>779</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>656</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edit_passwd_user_button</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_edit_passwd</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>357</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remove_user_button</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_remove_user</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>418</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

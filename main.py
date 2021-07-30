@@ -10,7 +10,7 @@ from templates.dostawy import main_window, ordered_table
 from templates.zamowienia import main, order
 from templates import login, moduly
 
-dir_output_files = "dostawa"
+dir_output_files_delivery = "dostawa"    # directory will be created if no exists
 
 
 class LoginWindow(QtWidgets.QMainWindow, login.Ui_LOGIN):
@@ -68,6 +68,7 @@ class MainWindowDelivery(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     ordered = QtCore.pyqtSignal()
     exit = QtCore.pyqtSignal()
     product = ""
+    delivery = ""
     product_list = []
 
     def __init__(self, parent=None):
@@ -80,7 +81,11 @@ class MainWindowDelivery(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def order_product(self):
         self.product = self.product_code.text()
-        if self.product == "":
+        self.delivery = self.delivery_nr.text()
+
+        if self.delivery == "":
+            self.show_message("Dostawa.", "Wprowadź numer dostawy!")
+        elif self.product == "":
             self.show_message("Brak numeru", "Wprowadź kod produktu!")
         else:
             db = Database.DataBase()
@@ -190,12 +195,12 @@ class MainWindowUsers(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
         QMessageBox.warning(self, title, message)
 
 
-class Main_window(QtWidgets.QMainWindow, main.Ui_MainWindow):
+class MainWindowOrder(QtWidgets.QMainWindow, main.Ui_MainWindow):
     order_table = []
     ordered = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        super(Main_window, self).__init__(parent)
+        super(MainWindowOrder, self).__init__(parent)
         self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.setupUi(self)
         self.order.clicked.connect(self.order_product)
@@ -281,23 +286,219 @@ class OrderWindow(QtWidgets.QMainWindow, order.Ui_MainWindow):
         QMessageBox.critical(self, title, message)
 
 
+class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
+
+    def __init__(self, parent=None):
+        super(UsersWindow, self).__init__(parent)
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
+        self.setupUi(self)
+        self.submit.clicked.connect(self.submited)
+        self.refresh_users_table()
+        self.show_passwd_button.clicked.connect(self.show_users_passwd)
+        self.button_remove.clicked.connect(self.delete_user)
+        self.button_modify_password.clicked.connect(self.edit_password)
+
+    def submited(self):
+        password1 = self.passwd.text()
+        password2 = self.con_passwd.text()
+        name = self.login.text()
+        if password1 != password2:
+            self.show_warning("Niezgodność haseł", "Hasła się nie zgadzają")
+            self.passwd.clear()
+            self.con_passwd.clear()
+            self.passwd.setFocus()
+            return False
+
+        db = Database.DataBase()
+        db.create_connection()
+        ret = 0
+        if self.both.isChecked():
+            user_args = (name, password1, 1, 1)
+            ret = db.add_user(user_args)
+
+        elif self.order.isChecked():
+            user_args = (name, password1, 1, 0)
+            ret = db.add_user(user_args)
+
+        elif self.delivery.isChecked():
+            user_args = (name, password1, 0, 1)
+            ret = db.add_user(user_args)
+
+        if ret == 1:
+            self.show_warning("Dodano", f"Użytkownik {name} został dodany.")
+        elif ret == -2:
+            self.show_warning("Błąd", f"Użytkownik {name} istnieje.\nWybierz inną nazwę.")
+        elif ret == -1:
+            self.show_warning("Błąd", "Przekroczono czas połączenia, spróbuj ponownie.")
+
+    def refresh_users_table(self, show_passwd=False):
+        db = Database.DataBase()
+        db.create_connection()
+        self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(0)
+        users = db.list_all_users()
+        counter = 0
+        for user in users:
+            print(user)
+            rowposition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowposition)
+            for i in range(0, 5):
+                if not show_passwd and i == 2:
+                    self.tableWidget.setItem(counter, i, QtWidgets.QTableWidgetItem("*****"))
+                else:
+                    self.tableWidget.setItem(counter, i, QtWidgets.QTableWidgetItem(user[i]))
+            counter += 1
+        self.tableWidget.resizeColumnsToContents()
+
+    def show_users_passwd(self):
+        self.refresh_users_table(True)
+
+    def delete_user(self):
+        db = Database.DataBase()
+        db.create_connection()
+        ID = self.remove_user_id.text()
+        self.show_warning("Usuwanie użytkownika", f"Czy na pewno chcesz usunąć użytkownika o ID: {ID}.")
+        if db.delete_user(ID):
+            self.show_warning("Usunięto", "Użytkownik został usunięty.")
+        else:
+            self.show_warning("Błąd!", "Nie udało się usunąć użytkownika.\nSprawdź wprowadzone ID")
+        self.refresh_users_table()
+
+    def edit_password(self):
+        user_id = self.edit_ID.text()
+        passwd1 = self.edit_passwd.text()
+        passwd2 = self.edit_repasswd
+        db = Database.DataBase()
+        db.create_connection()
+
+        if passwd1 != passwd2:
+            self.show_warning("Błąd", "Wprowadzone hasła się różnią")
+            self.edit_passwd.clear()
+            self.edit_repasswd.clear()
+            self.edit_passwd.setFocus()
+            return
+        if db.modify_user_passwd(user_id, passwd1):
+            self.show_warning("Zaktualizowano", "Hasło zostało zaktualizowane")
+            self.refresh_users_table()
+        else:
+            self.show_warning("Błąd", "Wystąpił nieoczekiwany błąd podczas zmiany hasła.\n Zrestartuj aplikację i spróbuj ponownie.")
+
+    def show_warning(self, title, message):
+        QMessageBox.warning(self, title, message)
+
+
 class Controller:
     def __init__(self):
-        self.product_code = ""
         self.curr_user = ""
+        self.product_code = ""
         self.nr_delivery = ""
         self.orderer_list = ""
         self.added_table = []
-
+        # initialize windows
         self.login_window = LoginWindow()
         self.window_delivery = MainWindowDelivery()
         self.ordered_table = OrderedTable(self.window_delivery)
         self.window_users = MainWindowUsers()
         self.modules = ModuleWindow()
-
+        self.window_order = MainWindowOrder()
+        self.window_order_table = OrderWindow(self.window_order)
+        self.users_window = UsersWindow()
+        # login
         self.login_window.logged.connect(self.modules.show)
+        self.login_window.order.connect(self.open_order_window)
+        self.login_window.delivery.connect(self.open_delivery_window)
+        # modules
+        self.modules.order.clicked.connect(self.open_order_window)
+        self.modules.delivery.clicked.connect(self.open_delivery_window)
+        self.modules.users.clicked.connect(self.open_users_window)
+        # orders
+        self.window_order.ordered.connect(self.prepare_order_table)
+        self.window_order_table.wiped.connect(self.wipe_order_window)
+        # delivery
+        self.window_delivery.ordered.connect(self.open_delivery_table)
+        self.window_delivery.exit.connect(self.save_and_exit)
+        self.ordered_table.ordered.connect(self.prepare_added_delivery_table)
+        self.ordered_table.gen_xls.connect(self.save_and_exit)
+        # users
+        # start program
         self.login_window.show()
 
+    # orders
+    def open_order_window(self):
+        self.curr_user = self.login_window.input_login.text()
+        username = self.login_window.input_login.text()
+        self.window_order.username.setText(username)
+        self.window_order.show()
+
+    def wipe_order_window(self):
+        self.window_order.wipe.click()
+        self.window_order.code.setFocus()
+
+    def prepare_order_table(self):
+        table = self.window_order.order_table
+        self.window_order_table.add_table(table)
+        self.window_order_table.listofparameters = table
+        self.window_order_table.show()
+    # todo po zatwierdzeniu
+
+    # delivery
+    def open_delivery_window(self):
+        self.curr_user = self.login_window.input_login.text()
+        print(self.curr_user, self.nr_delivery)
+        self.window_delivery.show()
+
+    def open_delivery_table(self):
+        self.window_delivery.delivery_nr.setEnabled(False)
+        self.orderer_list = self.window_delivery.product_list
+        print("lista: ", self.orderer_list)
+        self.product_code = self.window_delivery.product
+        self.ordered_table.add_table(self.orderer_list)
+        self.ordered_table.nr_delivery = self.nr_delivery
+        self.ordered_table.product_id = self.orderer_list[-1]
+        self.ordered_table.show()
+
+    def prepare_added_delivery_table(self):
+        order_date = self.orderer_list[1]
+        code = self.orderer_list[0]
+        note = self.orderer_list[3]
+        orderer = self.orderer_list[2]
+        self.added_table.append([order_date, code, note, orderer])
+
+    def save_and_exit(self):
+        global dir_output_files_delivery
+        self.nr_delivery = self.window_delivery.delivery
+        if len(self.added_table) == 0:
+            self.window_delivery.show_message("Koniec pracy.", "Brak zaktualizowanych produktów")
+            self.window_delivery.close()
+            self.ordered_table.close()
+        if not os.path.isdir(dir_output_files_delivery):
+            os.mkdir(dir_output_files_delivery)
+        today_date = str(datetime.datetime.today()).split()[0]
+        xlsx_namefile = f'{dir_output_files_delivery}/DOSTAWA_{self.nr_delivery}_{today_date}.xlsx'
+        columns_name = ["data_zamówienia", "kod", "notatka", "zamawiający"]
+        if os.path.isfile(xlsx_namefile):
+            print("File exists!")
+            self.ordered_table.show_warning_message("Błąd zapisu pliku .xlsx", f"Plik {xlsx_namefile} już istnieje!, "
+                                                                               f"Przenieś go w inne miejsce, lub "
+                                                                               f"zmień jego nazwę, aby utworzyć nowy "
+                                                                               f"plik dostawy")
+        else:
+            workbook = xlsxwriter.Workbook(xlsx_namefile)
+            worksheet = workbook.add_worksheet()
+            worksheet.write_row(0, 0, columns_name)
+            for i in range(0, len(self.added_table)):
+                worksheet.write_row(i+1, 0, self.added_table[i])
+            workbook.close()
+            self.ordered_table.show_warning_message("Zapisano", f"Plik dostawy został zapisany jako: {xlsx_namefile.split('/')[1]}")
+            self.window_delivery.close()
+            self.ordered_table.close()
+
+    # users
+    def open_users_window(self):
+        self.curr_user = self.login_window.input_login.text()
+        self.users_window.frame_remove_user.hide()
+        self.users_window.frame_edit_passwd.hide()
+        self.users_window.show()
 
 if __name__ == "__main__":
     import sys
