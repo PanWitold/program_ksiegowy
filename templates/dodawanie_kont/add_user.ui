@@ -551,6 +551,7 @@
   <tabstop>submit</tabstop>
   <tabstop>remove_user_button</tabstop>
   <tabstop>edit_passwd_user_button</tabstop>
+  <tabstop>access_button</tabstop>
   <tabstop>show_passwd_button</tabstop>
   <tabstop>remove_user_id</tabstop>
   <tabstop>button_remove</tabstop>
@@ -558,7 +559,10 @@
   <tabstop>edit_passwd</tabstop>
   <tabstop>edit_repasswd</tabstop>
   <tabstop>button_modify_password</tabstop>
-  <tabstop>tableWidget</tabstop>
+  <tabstop>access_id</tabstop>
+  <tabstop>check_orders</tabstop>
+  <tabstop>check_delivery</tabstop>
+  <tabstop>access_confirm</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -649,12 +653,12 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>278</x>
+     <x>252</x>
      <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>362</x>
-     <y>299</y>
+     <x>267</x>
+     <y>179</y>
     </hint>
    </hints>
   </connection>
@@ -665,12 +669,12 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
+     <x>120</x>
      <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>161</x>
-     <y>299</y>
+     <x>120</x>
+     <y>179</y>
     </hint>
    </hints>
   </connection>
@@ -681,12 +685,140 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>364</x>
-     <y>133</y>
+     <x>384</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>377</x>
-     <y>164</y>
+     <x>468</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>login</sender>
+   <signal>returnPressed()</signal>
+   <receiver>passwd</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>266</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passwd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>con_passwd</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>329</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>con_passwd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>order</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>169</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remove_user_id</sender>
+   <signal>returnPressed()</signal>
+   <receiver>button_remove</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>278</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edit_ID</sender>
+   <signal>returnPressed()</signal>
+   <receiver>edit_passwd</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edit_passwd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>edit_repasswd</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>308</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>312</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edit_repasswd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>button_modify_password</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>343</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>access_id</sender>
+   <signal>returnPressed()</signal>
+   <receiver>check_orders</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>468</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>240</y>
     </hint>
    </hints>
   </connection>

@@ -3,6 +3,7 @@ import os
 import datetime
 import xlsxwriter
 import csv
+import passwords
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
@@ -11,8 +12,8 @@ from templates.dostawy import main_window, ordered_table
 from templates.zamowienia import main, order
 from templates import login, moduly
 
-dir_output_files_delivery = "dostawa"    # directory will be created if no exists
-dir_output_files_orders = "zamowienia"
+dir_output_files_delivery = passwords.dir_dostawy    # directory will be created if no exists
+dir_output_files_orders = passwords.dir_zamowienia
 
 
 def csv_writer(filename, list_params):
@@ -25,6 +26,7 @@ def csv_writer(filename, list_params):
         if add_headers:
             csvwriter.writerow(headers)
         csvwriter.writerow(list_params)
+
 
 class LoginWindow(QtWidgets.QMainWindow, login.Ui_LOGIN):
     logged = QtCore.pyqtSignal()
@@ -308,7 +310,6 @@ class UsersWindow(QtWidgets.QMainWindow, add_user.Ui_MainWindow):
         self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.setupUi(self)
         self.submit.clicked.connect(self.submited)
-        self.refresh_users_table()
         self.show_passwd_button.clicked.connect(self.show_users_passwd)
         self.button_remove.clicked.connect(self.delete_user)
         self.button_modify_password.clicked.connect(self.edit_password)
@@ -465,8 +466,8 @@ class Controller:
 
     # orders
     def open_order_window(self):
-        self.curr_user = self.login_window.input_login.text()
-        username = self.login_window.input_login.text()
+        self.curr_user = self.login_window.input_login.text().upper()
+        username = self.curr_user
         self.window_order.username.setText(username)
         self.window_order.show()
 
@@ -482,6 +483,7 @@ class Controller:
 
     # delivery
     def open_delivery_window(self):
+        self.window_delivery = MainWindowDelivery()
         self.curr_user = self.login_window.input_login.text()
         print(self.curr_user, self.nr_delivery)
         self.window_delivery.show()
@@ -538,6 +540,7 @@ class Controller:
         self.users_window.frame_remove_user.hide()
         self.users_window.frame_edit_passwd.hide()
         self.users_window.frame_access.hide()
+        self.users_window.refresh_users_table()
         self.users_window.show()
 
 
